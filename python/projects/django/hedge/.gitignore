@@ -1,0 +1,7 @@
+*.log
+*.pyc
+*.tmp
+static/*
+migrations/*
+*__init__.py
+*settings.py

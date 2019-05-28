@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ static('css/bootstrap.min.css') }}">
+
+    <title>Login</title>
+  </head>
+  <body>
+    <!-- 登录表单 -->
+    <form style="margin-left:500px;margin-top:200px;" action="login" method="post" onsubmit="return dosubmit()">
+        <div class="form-group">
+            <label for="username" stype="display:inline;">账户：</label>
+            <input type="text" class="form-control" id="user" name="username" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="password" style="display:inline;">密码：</label>
+            <input type="password" class="form-control" id="password" name="password" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+        <button type="submit" class="btn btn-primary" id="tbn">登录</button>
+    </form>
+    <script>
+      var iscommitted=false;
+      function dosubmit(){
+        if(!iscommitted){
+            iscommitted=true;
+            document.getElementById("tbn").disabled="disabled";
+            return true;
+        }else{
+        return false;
+        }
+      }
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{ static('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ static('js/popper.min.js') }}"></script>
+    <script src="{{ static('js/bootstrap.min.js') }}"></script>
+  </body>
+</html>
