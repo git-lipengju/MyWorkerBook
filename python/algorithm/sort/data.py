@@ -1,5 +1,0 @@
-origin_list_100 = []
-origin_list_1000 = []
-origin_list_10000 = []
-origin_list_100000 = []
-origin_list_1000000 = []
