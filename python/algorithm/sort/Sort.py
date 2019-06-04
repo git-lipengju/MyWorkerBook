@@ -3,7 +3,7 @@ from make_data import get_data, get_range_data
 
 
 # stable sort
-def bubble(data):
+def bubble(data, is_log=True):
     data_length = len(data)
     data1 = copy.deepcopy(data)
     # 传统sort 升序
@@ -17,9 +17,10 @@ def bubble(data):
                 data1[i2] = data1[i2-1]
                 data1[i2-1] = tmp
     end = time.time()
-    print("bubble time is : %s" % (end - start))
-    # print("bubble count is : %s " % count1)
-    # print("bubble result is : %s" % data1)
+    if is_log:
+        print("bubble time is : %s" % (end - start))
+        # print("bubble count is : %s " % count1)
+        # print("bubble result is : %s" % data1)
     # 优化sort，添加最后一次交换位置的标记点，下次排序只需遍历到此处即可
     data2 = copy.deepcopy(data)
     start = time.time()
@@ -38,14 +39,15 @@ def bubble(data):
         if not is_exchange or exchange_index == data_length:
             break
     end = time.time()
-    print("upgrade bubble time is : %s" % (end - start))
-    # print("upgrade bubble count is : %s " % count2)
-    # print("upgrade bubble result is : %s" % data2)
+    if is_log:
+        print("upgrade bubble time is : %s" % (end - start))
+        # print("upgrade bubble count is : %s " % count2)
+        # print("upgrade bubble result is : %s" % data2)
     return data1
 
 
 # unstable
-def selection(data):
+def selection(data, is_log=True):
     data_length = len(data)
     data1 = copy.deepcopy(data)
     start = time.time()
@@ -58,14 +60,15 @@ def selection(data):
                 data1[i1] = data1[i2]
                 data1[i2] = tmp
     end = time.time()
-    print("selection time is : %s " % (end - start))
-    # print("selection count is : %s" % count1)
-    # print("selection result is : %s " % data1)
+    if is_log:
+        print("selection time is : %s " % (end - start))
+        # print("selection count is : %s" % count1)
+        # print("selection result is : %s " % data1)
     return data1
 
 
 # stable
-def insert(data):
+def insert(data, is_log=True):
     data_length = len(data)
     data1 = copy.deepcopy(data)
     start = time.time()
@@ -79,14 +82,15 @@ def insert(data):
             data1[i1 - i - 1] = data1[i1 - i]
             data1[i1 - i] = tmp
     end = time.time()
-    print("insert time is : %s " % (end - start))
-    # print("insert count is : %s" % count1)
-    # print("insert result is : %s " % data1)
+    if is_log:
+        print("insert time is : %s " % (end - start))
+        # print("insert count is : %s" % count1)
+        # print("insert result is : %s " % data1)
     return data1
 
 
 # unstable
-def shell(data):
+def shell(data, is_log=True):
     data_length = len(data)
     data1 = copy.deepcopy(data)
     start = time.time()
@@ -106,13 +110,15 @@ def shell(data):
                 # count1 += (i2 - i3)/gap + 1
         gap = math.floor(gap/5)
     end = time.time()
-    print("shell time is : %s " % (end - start))
-    # print("shell count is : %s" % count1)
-    # print("shell result is : %s " % data1)
+    if is_log:
+        print("shell time is : %s " % (end - start))
+        # print("shell count is : %s" % count1)
+        # print("shell result is : %s " % data1)
     return data1
 
 
-def merge(data):
+# stable
+def merge(data, is_log=True):
     data1 = copy.deepcopy(data)
     start = time.time()
     def recusive(rcdata):
@@ -146,19 +152,144 @@ def merge(data):
         return result
     data1 = recusive(data1)
     end = time.time()
-    print("merge time is : %s " % (end - start))
-    # print("merge count is : %s" % count1)
-    # print("merge result is : %s " % data1)
+    if is_log:
+        print("merge time is : %s " % (end - start))
+        # print("merge count is : %s" % count1)
+        # print("merge result is : %s " % data1)
+    return data1
+
+
+# unstable
+def quick(data, is_log=True):
+    data1 = copy.deepcopy(data)
+    start = time.time()
+    def recusive(rcdata):
+        data_length = len(rcdata)
+        if data_length < 2:
+            return rcdata
+        division_point = rcdata[0]
+        left_data = []
+        right_data = []
+        for i in range(1, data_length):
+            if rcdata[i] < division_point:
+                left_data.append(rcdata[i])
+            else:
+                right_data.append(rcdata[i])
+        left_data.append(division_point)
+        return recusive(left_data) + recusive(right_data)
+
+    data1 = recusive(data1)
+    end = time.time()
+    if is_log:
+        print("quick time is : %s " % (end - start))
+        # print("quick count is : %s" % count1)
+        # print("quick result is : %s " % data1)
+    return data1
+
+
+# stable
+def counting(data, is_log=True):
+    data1 = copy.deepcopy(data)
+    data_length = len(data1)
+    start = time.time()
+    min_data = data1[0]
+    max_data = data1[0]
+    for i in range(1, data_length):
+        if data1[i] < min_data:
+            min_data = data1[i]
+        if data1[i] > max_data:
+            max_data = data1[i]
+    tmp_list = [0] * (max_data - min_data + 1)
+    for i in range(data_length):
+        tmp_list[data1[i] - min_data] += 1
+    result = []
+    for i in range(max_data - min_data + 1):
+        while tmp_list[i]:
+            result.append(i + min_data)
+            tmp_list[i] -= 1
+    end = time.time()
+    data1 = result
+    if is_log:
+        print("counting time is : %s " % (end - start))
+        # print("counting count is : %s" % count1)
+        # print("counting result is : %s " % data1)
+    return data1
+
+
+# stable
+def bucket(data, is_log=True):
+    data1 = copy.deepcopy(data)
+    data_length = len(data1)
+    start = time.time()
+    bucket_size = 20  # 定义每个桶的大小
+    min_data = data1[0]
+    max_data = data1[0]
+    for i in range(1, data_length):
+        if data1[i] < min_data:
+            min_data = data1[i]
+        if data1[i] > max_data:
+            max_data = data1[i]
+    bucket_count = math.floor((max_data - min_data) / bucket_size) + 1  # 根据桶的大小计算桶的个数
+    buckets = [[] for i in range(bucket_count)]  # 生成所有的桶
+    for i in range(data_length):  # 将数据放到每个桶中
+        buckets[math.floor((data1[i] - min_data) / bucket_size)].append(data1[i])
+    result = []
+    for i in range(bucket_count):  # 对每个桶进行排序
+        if len(buckets[i]) < 1:
+            continue
+        buckets[i] = selection(buckets[i], is_log=False)  # 调用选择排序
+        result = result + buckets[i]
+    end = time.time()
+    data1 = result
+    if is_log:
+        print("bucket time is : %s " % (end - start))
+        # print("bucket count is : %s" % count1)
+        # print("bucket result is : %s " % data1)
+    return data1
+
+
+# stable
+def radix(data, is_log=True):
+    data1 = copy.deepcopy(data)
+    start = time.time()
+
+    end = time.time()
+    if is_log:
+        print("radix time is : %s " % (end - start))
+        # print("radix count is : %s" % count1)
+        # print("radix result is : %s " % data1)
     return data1
 
 
 if __name__ == "__main__":
-    data_list = get_data(10000)
-    bubble_data = bubble(data_list)
-    selection_data = selection(data_list)
-    insert_data = insert(data_list)
-    shell_data = shell(data_list)
-    merge_data = merge(data_list)
-    print(bubble_data == selection_data == insert_data == shell_data == merge_data)
+    data_list = get_data(10000)  # 10000
+    # bubble_data = bubble(data_list)  # 13.85 14.66
+    # selection_data = selection(data_list)  # 9.84
+    # insert_data = insert(data_list)  # 15.69
+    # shell_data = shell(data_list)  # 13.73
+    # print(bubble_data == selection_data == insert_data == shell_data)
+    merge_data = merge(data_list)  # 0.065 extra space
+    quick_data = quick(data_list)  # 0.047
+    counting_data = counting(data_list)  # 0.0135
+    bucket_data = bucket(data_list)  #bubble: 0.2, selection: 0.171, insert: 0.172, shell: 0.195, merge: 0.187, quick: 0.184, counting: 0.199
+    radix_data = radix(data_list)  #
+    # print(merge_data == quick_data == counting_data == bucket_data == radix_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
