@@ -251,8 +251,18 @@ def bucket(data, is_log=True):
 # stable
 def radix(data, is_log=True):
     data1 = copy.deepcopy(data)
+    data_length = len(data1)
     start = time.time()
-
+    max_data = max(data1)
+    digits = int(math.log(max_data, 10)) + 1
+    buckets = [[] for i in range(10)]
+    for i in range(digits):  # 遍历每一位数
+        for j in range(data_length):  #
+            buckets[int(data1[j]/(10 ** i)) % 10].append(data1[j])
+        data1 = []
+        for k in buckets:
+            data1 += k
+        buckets = [[] for i in range(10)]
     end = time.time()
     if is_log:
         print("radix time is : %s " % (end - start))
@@ -272,8 +282,8 @@ if __name__ == "__main__":
     quick_data = quick(data_list)  # 0.047
     counting_data = counting(data_list)  # 0.0135
     bucket_data = bucket(data_list)  #bubble: 0.2, selection: 0.171, insert: 0.172, shell: 0.195, merge: 0.187, quick: 0.184, counting: 0.199
-    radix_data = radix(data_list)  #
-    # print(merge_data == quick_data == counting_data == bucket_data == radix_data)
+    radix_data = radix(data_list)  # 0.045
+    print(merge_data == quick_data == counting_data == bucket_data == radix_data)
 
 
 
