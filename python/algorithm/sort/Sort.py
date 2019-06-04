@@ -113,11 +113,38 @@ def shell(data):
 
 
 def merge(data):
-    data_length = len(data)
     data1 = copy.deepcopy(data)
     start = time.time()
-
-
+    def recusive(rcdata):
+        rcdata_length = len(rcdata)
+        if rcdata_length < 2:
+            return rcdata
+        left_data = rcdata[:int(rcdata_length/2)]
+        right_data = rcdata[int(rcdata_length/2):]
+        left_length = len(left_data)
+        right_length = len(right_data)
+        if left_length > 1:
+            left_data = recusive(left_data)
+        if right_length > 1:
+            right_data = recusive(right_data)
+        left_index = 0
+        right_index = 0
+        result = []
+        while left_index < left_length and right_index < right_length:
+            if left_data[left_index] <= right_data[right_index]:
+                result.append(left_data[left_index])
+                left_index += 1
+            else:
+                result.append(right_data[right_index])
+                right_index += 1
+        if left_index < left_length:
+            for i in range(left_index, left_length):
+                result.append(left_data[i])
+        if right_index < right_length:
+            for i in range(right_index, right_length):
+                result.append(right_data[i])
+        return result
+    data1 = recusive(data1)
     end = time.time()
     print("merge time is : %s " % (end - start))
     # print("merge count is : %s" % count1)
@@ -126,7 +153,7 @@ def merge(data):
 
 
 if __name__ == "__main__":
-    data_list = get_data(1000)
+    data_list = get_data(10000)
     bubble_data = bubble(data_list)
     selection_data = selection(data_list)
     insert_data = insert(data_list)
